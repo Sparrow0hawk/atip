@@ -1,5 +1,6 @@
 <script>
   import { gjScheme, emptyGeojson } from "../stores.js";
+  import { geojsonToSave } from "../src/geojson_utils";
 
   export let authorityName;
 
@@ -13,7 +14,10 @@
     }
   }
   gjScheme.subscribe(() =>
-    window.localStorage.setItem(authorityName, JSON.stringify(geojsonToSave()))
+    window.localStorage.setItem(
+      authorityName,
+      JSON.stringify(geojsonToSave($gjScheme))
+    )
   );
 
   function clearAll() {
@@ -31,17 +35,8 @@
     }
   }
 
-  // Remove the editing property hack
-  function geojsonToSave() {
-    const copy = JSON.parse(JSON.stringify($gjScheme));
-    for (let feature of copy.features) {
-      delete feature.properties.editing;
-    }
-    return copy;
-  }
-
   function exportToGeojson() {
-    let geojson = geojsonToSave();
+    let geojson = geojsonToSave($gjScheme);
     var filename = authorityName;
     geojson.authority = authorityName;
     // we could probably be more sophisticated here and set version more centrally
