@@ -4,6 +4,9 @@ import { svelte } from "@sveltejs/vite-plugin-svelte";
 import wasmPack from "vite-plugin-wasm-pack";
 
 export default defineConfig({
+  test: {
+    environment: "jsdom",
+  },
   build: {
     rollupOptions: {
       input: {
